@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détection Fraude</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="logo">
+        <i class="fas fa-briefcase"></i>
+        <span>KHADAMNI</span>
+    </div>
+    
+    <nav class="nav-menu">
+        <a href="index.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Accueil</span>
+        </a>
+        <a href="fraud_detection.html" class="nav-item active">
+            <i class="fas fa-shield-alt"></i>
+            <span>Détection Fraude</span>
+        </a>
+        <a href="location_recommendation.html" class="nav-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Clustering Location</span>
+        </a>
+        <a href="salary_prediction.html" class="nav-item">
+            <i class="fas fa-dollar-sign"></i>
+            <span>Prédiction Salaire</span>
+        </a>
+        <a href="job_recommendation.html" class="nav-item">
+            <i class="fas fa-lightbulb"></i>
+            <span>Recommandation</span>
+        </a>
+    </nav>
+</div>
+
+<div class="main-content">
+    <header class="top-bar">
+        <div class="header-left">
+            <button class="toggle-sidebar" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h2>Détection Fraude</h2>
+        </div>
+        <div class="header-right">
+            <i class="fas fa-user-circle"></i>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="section-header">
+            <h1>Classification Fraude / Légitime</h1>
+            <p>Analysez les offres d'emploi et identifiez les fraudes potentielles</p>
+        </div>
+
+        <div class="content-grid">
+            <div class="form-card">
+                <div class="card-header">
+                    <i class="fas fa-search-minus"></i>
+                    <h3>Analyser une Offre</h3>
+                </div>
+                
+               <form id="fraudForm">
+
+    <div class="form-group">
+        <label><i class="fas fa-heading"></i> Job Title</label>
+        <input type="text" id="job_title" placeholder="Ex: Data Scientist" required>
+    </div>
+
+    <div class="form-group">
+        <label><i class="fas fa-building"></i> Company / Department</label>
+        <input type="text" id="company" placeholder="Ex: Tech Company Inc" required>
+    </div>
+
+    <div class="form-group">
+        <label><i class="fas fa-map-marker-alt"></i> Location</label>
+        <input type="text" id="location" placeholder="Ex: Paris, France" required>
+    </div>
+
+    <div class="form-group">
+        <label><i class="fas fa-list"></i> Job Requirements</label>
+        <input type="text" id="requirements" placeholder="Ex: Python, SQL, Machine Learning" required>
+    </div>
+
+    <div class="form-group">
+        <label><i class="fas fa-dollar-sign"></i> Salary</label>
+        <input type="number" id="salary" placeholder="Ex: 50000" min="0" required>
+    </div>
+
+    <div class="form-group">
+        <label><i class="fas fa-file-alt"></i> Company Profile Description Length</label>
+        <input type="number" id="description_length" placeholder="Ex: 500 words" min="0" required>
+    </div>
+
+    <div class="form-group">
+        <label><i class="fas fa-gift"></i> Benefits</label>
+        <input type="text" id="benefits" placeholder="Ex: Remote work, Health insurance">
+    </div>
+
+    <div class="form-group">
+        <label><i class="fas fa-briefcase"></i> Experience Required</label>
+        <input type="text" id="experience" placeholder="Ex: 2+ years">
+    </div>
+
+    <div class="form-group">
+        <label><i class="fas fa-graduation-cap"></i> Education Level</label>
+        <input type="text" id="education" placeholder="Ex: Bachelor's Degree">
+    </div>
+
+    <div class="form-group">
+        <label><i class="fas fa-industry"></i> Industry</label>
+        <input type="text" id="industry" placeholder="Ex: Information Technology">
+    </div>
+
+    <div class="form-group">
+        <label><i class="fas fa-cogs"></i> Job Function</label>
+        <input type="text" id="job_function" placeholder="Ex: Data & AI">
+    </div>
+
+    <button type="button" class="btn-primary" onclick="predictClass()">
+        <i class="fas fa-check-circle"></i> Analyze Job Offer
+    </button>
+
+</form>
+
+            </div>
+
+            <div class="results-card">
+                <div class="card-header">
+                    <i class="fas fa-results"></i>
+                    <h3>Résultats</h3>
+                </div>
+                
+                <div id="class_result" class="results-container">
+                    <p class="placeholder">Les résultats apparaîtront ici</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

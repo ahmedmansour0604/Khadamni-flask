@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommendation System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="logo">
+            <i class="fas fa-briefcase"></i>
+            <span>KHADAMNI</span>
+        </div>
+
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Accueil</span>
+            </a>
+            <a href="fraud_detection.html" class="nav-item">
+                <i class="fas fa-shield-alt"></i>
+                <span>Détection Fraude</span>
+            </a>
+            <a href="location_recommendation.html" class="nav-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Clustering Location</span>
+            </a>
+            <a href="salary_prediction.html" class="nav-item">
+                <i class="fas fa-dollar-sign"></i>
+                <span>Prédiction Salaire</span>
+            </a>
+            <a href="job_recommendation.html" class="nav-item active">
+                <i class="fas fa-lightbulb"></i>
+                <span>Recommandation</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <header class="top-bar">
+            <div class="header-left">
+                <button class="toggle-sidebar" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h2>Système de Recommandation</h2>
+            </div>
+            <div class="header-right">
+                <i class="fas fa-user-circle"></i>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="section-header">
+                <h1>Recommandation d'Offres d'Emploi</h1>
+                <p>Découvrez les offres qui correspondent le mieux à votre profil</p>
+            </div>
+
+            <div class="content-grid">
+                <div class="form-card">
+                    <div class="card-header">
+                        <i class="fas fa-user-tie"></i>
+                        <h3>Vos Préférences</h3>
+                    </div>
+
+                    <form id="recommendationForm">
+
+                        <div class="form-group">
+                            <label><i class="fas fa-user-tie"></i> Job Title</label>
+                            <select id="job_title" required>
+                                <option value="Data Scientist">Data Scientist</option>
+                                <option value="Data Engineer">Data Engineer</option>
+                                <option value="Data Analyst">Data Analyst</option>
+                                <option value="Machine Learning Engineer">Machine Learning Engineer</option>
+                                <option value="Software Engineer">Software Engineer</option>
+                                <option value="Manager">Manager</option>
+                                <option value="Other">Other</option>
+                                <!-- Add full list if needed -->
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-chart-line"></i> Experience Level</label>
+                            <select id="experience_level" required>
+                                <option value="EN">Entry Level (EN)</option>
+                                <option value="MI">Mid Level (MI)</option>
+                                <option value="SE">Senior Level (SE)</option>
+                                <option value="EX">Executive Level (EX)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-briefcase"></i> Employment Type</label>
+                            <select id="employment_type" required>
+                                <option value="FT">Full-time (FT)</option>
+                                <option value="PT">Part-time (PT)</option>
+                                <option value="CT">Contract (CT)</option>
+                                <option value="FL">Freelance (FL)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-house-laptop"></i> Remote Ratio</label>
+                            <select id="remote_ratio" required>
+                                <option value="0">On-site (0%)</option>
+                                <option value="50">Hybrid (50%)</option>
+                                <option value="100">Remote (100%)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-map-marker-alt"></i> Company Location</label>
+                            <input type="text" id="company_location" placeholder="Ex: US, FR, DE" value="US" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-flag"></i> Employee Residence</label>
+                            <input type="text" id="employee_residence" placeholder="Ex: US, FR, IN" value="US" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-building"></i> Company Size</label>
+                            <select id="company_size" required>
+                                <option value="S">Small (S)</option>
+                                <option value="M">Medium (M)</option>
+                                <option value="L">Large (L)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-calendar"></i> Work Year</label>
+                            <select id="work_year" required>
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                                <option value="2021">2021</option>
+                                <option value="2020">2020</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-money-bill"></i> Salary (USD Reference)</label>
+                            <input type="number" id="salary_in_usd" placeholder="Ex: 100000" value="100000" required>
+                        </div>
+
+                        <button type="button" class="btn-primary" onclick="fetchRecommendations()">
+                            <i class="fas fa-search"></i> Get Job Recommendations
+                        </button>
+
+                    </form>
+
+
+                </div>
+
+                <div class="results-card">
+                    <div class="card-header">
+                        <i class="fas fa-star"></i>
+                        <h3>Résultats</h3>
+                    </div>
+
+                    <div id="reco_result" class="results-container">
+                        <p class="placeholder">Les recommandations apparaîtront ici</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        async function fetchRecommendations() {
+            const resultDiv = document.getElementById('reco_result');
+            resultDiv.innerHTML = '<p class="placeholder">Recherche en cours...</p>';
+
+            const data = {
+                work_year: document.getElementById('work_year').value,
+                employment_type: document.getElementById('employment_type').value,
+                remote_ratio: document.getElementById('remote_ratio').value,
+                job_title: document.getElementById('job_title').value,
+                experience_level: document.getElementById('experience_level').value,
+                company_size: document.getElementById('company_size').value,
+                company_location: document.getElementById('company_location').value,
+                employee_residence: document.getElementById('employee_residence').value,
+                salary_in_usd: document.getElementById('salary_in_usd').value
+            };
+
+            try {
+                const response = await fetch('/recommend', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    let html = '';
+                    result.recommendations.forEach(job => {
+                        const empMap = { 'FT': 'Full Time', 'PT': 'Part Time', 'CT': 'Contract', 'FL': 'Freelance' };
+                        const expMap = { 'EN': 'Entry Level', 'MI': 'Mid Level', 'SE': 'Senior', 'EX': 'Executive' };
+                        const sizeMap = { 'S': 'Small', 'M': 'Medium', 'L': 'Large' };
+
+                        const empLabel = empMap[job.employment_type] || job.employment_type;
+                        const expLabel = expMap[job.experience_level] || job.experience_level;
+                        const sizeLabel = sizeMap[job.company_size] || job.company_size;
+
+                        html += `
+                        <div class="job-card" style="margin-bottom: 20px;">
+                            <div class="job-body">
+                                <div class="job-top">
+                                    <div>
+                                        <h4 class="job-title" style="font-size: 1.25em;">${job.job_title}</h4>
+                                        <p class="job-company">
+                                            <i class="fas fa-building"></i> ${job.company_location} &bull; ${sizeLabel}
+                                        </p>
+                                    </div>
+                                    <div class="salary-badge">
+                                        $${parseInt(job.salary_in_usd).toLocaleString()}
+                                    </div>
+                                </div>
+                                
+                                <div class="job-tags" style="margin-top: 12px;">
+                                    <span class="tag"><i class="fas fa-briefcase"></i> ${empLabel}</span>
+                                    <span class="tag"><i class="fas fa-layer-group"></i> ${expLabel}</span>
+                                    <span class="tag"><i class="fas fa-calendar"></i> ${job.work_year}</span>
+                                    <span class="tag ${job.remote_ratio == 100 ? 'badge-remote' : ''}" style="${job.remote_ratio == 100 ? 'color:white;' : ''}">
+                                        <i class="fas fa-laptop-house"></i> ${job.remote_ratio}% Remote
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        `;
+                    });
+                    resultDiv.innerHTML = html;
+                } else {
+                    resultDiv.innerHTML = `<p style="color: red;">Error: ${result.message}</p>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<p style="color: red;">Failed to fetch recommendations: ${error}</p>`;
+            }
+        }
+    </script>
+</body>
+
+</html>

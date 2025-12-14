@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gérer Offres - Khadamni</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="sidebar recruiter">
+     <div class="logo">
+        <i class="fas fa-briefcase"></i>
+        <span>KHADAMNI</span>
+    </div>
+    <div class="profile">
+        <div class="avatar"><i class="fas fa-user-tie"></i></div>
+        <div class="profile-info"><strong id="recName">Recruteur</strong><small>Compte recruteur</small></div>
+    </div>
+    <nav class="nav-menu">
+        <a href="recruiter_home.html" class="nav-item"><i class="fas fa-home"></i><span>Accueil Recruteur</span></a>
+        <a href="post_job.html" class="nav-item"><i class="fas fa-plus-circle"></i><span>Poster Offre</span></a>
+        <a href="manage_jobs.html" class="nav-item active"><i class="fas fa-briefcase"></i><span>Gérer Offres</span></a>
+        <a href="candidates.html" class="nav-item"><i class="fas fa-users"></i><span>Candidats</span></a>
+        <a href="analytics.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
+      
+    </nav>
+</div>
+
+<div class="main-content">
+    <header class="top-bar">
+        <div class="header-left"><button class="toggle-sidebar" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button><h2>Gérer Offres</h2></div>
+        <div class="header-right"><div class="user-pill"><i class="fas fa-user-circle"></i><span id="currentUserEmail">Recruiter</span></div><button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i>&nbsp;Deconnexion</button></div>
+    </header>
+
+    <div class="container">
+        <div class="section-header">
+            <h1>Vos offres</h1>
+            <p>Liste des offres que vous avez publiées (demo)</p>
+        </div>
+
+        <div class="jobs-frame">
+            <div id="manageJobsList"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Job Modal -->
+<div id="editJobModal" class="modal" aria-hidden="true" style="display:none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Modifier l'offre</h3>
+                <button onclick="closeEditModal()" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editJobForm">
+                    <input type="hidden" name="id" />
+                    <div style="display:flex;gap:8px;flex-wrap:wrap">
+                        <input name="title" placeholder="Titre" required style="flex:1;padding:8px" />
+                        <input name="company" placeholder="Entreprise" required style="flex:1;padding:8px" />
+                    </div>
+                    <div style="display:flex;gap:8px; margin-top:8px;">
+                        <input name="location" placeholder="Localisation" style="flex:1;padding:8px" />
+                        <select name="type" style="padding:8px;">
+                            <option>Full-time</option>
+                            <option>Remote</option>
+                            <option>Part-time</option>
+                            <option>CDI</option>
+                        </select>
+                        <input name="salary" type="number" placeholder="Salaire" style="width:140px;padding:8px" />
+                    </div>
+                    <div style="margin-top:8px">
+                        <input name="tags" placeholder="Tags (séparés par ,)" style="width:100%;padding:8px" />
+                    </div>
+                    <div style="margin-top:8px">
+                        <textarea name="desc" placeholder="Description" rows="4" style="width:100%;padding:8px"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="display:flex;gap:8px;justify-content:flex-end;padding:12px">
+                <button class="card-btn" onclick="closeEditModal()">Annuler</button>
+                <button class="card-btn view" onclick="saveEditedJobFromModal()">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+    try{
+        const u=JSON.parse(localStorage.getItem('kh_current_user'));
+        if(!u||u.role!=='recruiter') window.location.href='login.html';
+        if(u&&u.email){ document.getElementById('currentUserEmail').textContent=u.email; const rn=document.getElementById('recName'); if(rn) rn.textContent = u.email.split('@')[0]; }
+    }catch(e){}
+    // ensure manage jobs list refreshes
+    try{ if (typeof renderManageJobs === 'function') renderManageJobs(); }catch(e){}
+</script>
+</body>
+</html>

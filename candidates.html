@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Candidats - Khadamni</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="sidebar recruiter">
+     <div class="logo">
+        <i class="fas fa-briefcase"></i>
+        <span>KHADAMNI</span>
+     
+    </div>
+    <div class="profile">
+        <div class="avatar"><i class="fas fa-user-tie"></i></div>
+        <div class="profile-info"><strong id="recName">Recruteur</strong><small>Compte recruteur</small></div>
+    </div>
+    <nav class="nav-menu">
+        <a href="recruiter_home.html" class="nav-item"><i class="fas fa-home"></i><span>Accueil Recruteur</span></a>
+        <a href="post_job.html" class="nav-item"><i class="fas fa-plus-circle"></i><span>Poster Offre</span></a>
+        <a href="manage_jobs.html" class="nav-item"><i class="fas fa-briefcase"></i><span>Gérer Offres</span></a>
+        <a href="candidates.html" class="nav-item active"><i class="fas fa-users"></i><span>Candidats</span></a>
+        <a href="analytics.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
+       
+    </nav>
+</div>
+
+<div class="main-content">
+    <header class="top-bar">
+        <div class="header-left"><button class="toggle-sidebar" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button><h2>Candidats</h2></div>
+        <div class="header-right"><div class="user-pill"><i class="fas fa-user-circle"></i><span id="currentUserEmail">Recruiter</span></div><button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i>&nbsp;Deconnexion</button></div>
+    </header>
+
+    <div class="container">
+        <div class="section-header">
+            <h1>Liste des candidats</h1>
+            <p>Voir et filtrer les candidats pour vos offres (demo)</p>
+        </div>
+
+        <div class="results-card">
+            <div class="card-header"><i class="fas fa-search"></i><h3>Offres publiées</h3></div>
+            <div class="content">
+                <div id="candidatesJobsList">Chargement...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+    try{
+        const u=JSON.parse(localStorage.getItem('kh_current_user'));
+        if(!u||u.role!=='recruiter') window.location.href='login.html';
+        if(u&&u.email){ document.getElementById('currentUserEmail').textContent=u.email; const rn=document.getElementById('recName'); if(rn) rn.textContent = u.email.split('@')[0]; }
+    }catch(e){}
+
+    // Render recruiter's job postings and placeholder for candidates (demo)
+    try{
+        if (typeof renderCandidatesJobs === 'function') renderCandidatesJobs();
+    }catch(e){ console.warn(e); }
+</script>
+</body>
+</html>

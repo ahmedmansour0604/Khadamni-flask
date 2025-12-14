@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Poster une offre - Khadamni</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="sidebar recruiter">
+     <div class="logo">
+        <i class="fas fa-briefcase"></i>
+        <span>KHADAMNI</span>
+  
+     
+    </div>
+    <div class="profile">
+        <div class="avatar"><i class="fas fa-user-tie"></i></div>
+        <div class="profile-info"><strong id="recName">Recruteur</strong><small>Compte recruteur</small></div>
+    </div>
+    <nav class="nav-menu">
+        <a href="recruiter_home.html" class="nav-item"><i class="fas fa-home"></i><span>Accueil Recruteur</span></a>
+        <a href="post_job.html" class="nav-item active"><i class="fas fa-plus-circle"></i><span>Poster Offre</span></a>
+        <a href="manage_jobs.html" class="nav-item"><i class="fas fa-briefcase"></i><span>Gérer Offres</span></a>
+        <a href="candidates.html" class="nav-item"><i class="fas fa-users"></i><span>Candidats</span></a>
+        <a href="analytics.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
+     
+    </nav>
+</div>
+
+<div class="main-content">
+    <header class="top-bar">
+        <div class="header-left"><button class="toggle-sidebar" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button><h2>Poster une offre</h2></div>
+        <div class="header-right"><div class="user-pill"><i class="fas fa-user-circle"></i><span id="currentUserEmail">Recruiter</span></div><button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i>&nbsp;Deconnexion</button></div>
+    </header>
+
+    <div class="container">
+        <div class="section-header">
+            <h1>Créer une nouvelle offre</h1>
+            <p>Formulaire de création d'offre (démo)</p>
+        </div>
+
+        <div class="content-grid">
+            <div class="form-card recruiter-card-accent">
+                <div class="card-header"><i class="fas fa-file-alt"></i><h3>Détails de l'offre</h3></div>
+                <div class="content">
+                    <form id="postJobForm">
+                        <div class="form-group"><label>Titre</label><input name="title" type="text" placeholder="Titre du poste" required></div>
+                        <div class="form-group"><label>Entreprise</label><input name="company" type="text" placeholder="Entreprise" required></div>
+                        <div class="form-group"><label>Localisation</label><input name="location" type="text" placeholder="Paris / Remote"></div>
+                        <div class="form-group"><label>Type</label>
+                            <select name="type">
+                                <option>Full-time</option>
+                                <option>Part-time</option>
+                                <option>Remote</option>
+                                <option>CDI</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>Salaire (annuel €)</label><input name="salary" type="number" placeholder="50000"></div>
+                        <div class="form-group"><label>Tags (séparés par ,)</label><input name="tags" type="text" placeholder="Python,ML,SQL"></div>
+                        <div class="form-group"><label>Description</label><textarea name="desc" rows="4" placeholder="Description de l'offre"></textarea></div>
+                        <div style="display:flex; gap:12px"><button type="submit" class="btn-primary">Publier</button><button type="button" class="btn-primary" onclick="window.location.href='manage_jobs.html'" style="background:#fff;color:var(--text-dark);border:1px solid var(--border)">Gérer mes offres</button></div>
+                    </form>
+                </div>
+            </div>
+            <div class="results-card">
+                <div class="card-header"><i class="fas fa-info-circle"></i><h3>Info</h3></div>
+                <div class="content"><p>Les offres sont stockées côté client pour la démo.</p></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+    try{
+        const u=JSON.parse(localStorage.getItem('kh_current_user'));
+        if(!u||u.role!=='recruiter') window.location.href='login.html';
+        if(u&&u.email){ document.getElementById('currentUserEmail').textContent=u.email; const rn=document.getElementById('recName'); if(rn) rn.textContent = u.email.split('@')[0]; }
+    }catch(e){}
+
+    // Handle post job form
+    (function(){
+        const form = document.getElementById('postJobForm');
+        if (!form) return;
+        form.addEventListener('submit', (ev)=>{
+            ev.preventDefault();
+            const data = new FormData(form);
+            const title = (data.get('title')||'').trim();
+            const company = (data.get('company')||'').trim();
+            const location = (data.get('location')||'').trim() || 'Remote';
+            const type = data.get('type') || 'Full-time';
+            const salary = parseInt(data.get('salary')) || 30000;
+            const tags = (data.get('tags')||'').split(',').map(s=>s.trim()).filter(Boolean);
+            const desc = (data.get('desc')||'').trim();
+
+            const u = JSON.parse(localStorage.getItem('kh_current_user') || 'null');
+            const job = {
+                id: getNextJobId(),
+                title, company, location, type, salary, tags, img: 'images/maxresdefault.jpg', desc,
+                owner: u && u.email ? u.email : 'unknown'
+            };
+
+            saveJobToStorage(job);
+            alert('Offre publiée — visible sur la page d\'accueil.');
+            // redirect to manage jobs so recruiter can see it
+            window.location.href = 'manage_jobs.html';
+        });
+    })();
+</script>
+</body>
+</html>
